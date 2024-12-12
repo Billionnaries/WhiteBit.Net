@@ -28,10 +28,6 @@
     <DocumentationFile>WhiteBit.Net.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Icon\icon.png" Pack="true" PackagePath="\" />
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
