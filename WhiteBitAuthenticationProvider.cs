@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
@@ -14,6 +15,7 @@ namespace WhiteBit.Net
     internal class WhiteBitAuthenticationProvider : AuthenticationProvider
     {
         private static IMessageSerializer _serializer = new SystemTextJsonMessageSerializer();
+        private int[] seconds = new int[86400]; 
 
         public WhiteBitAuthenticationProvider(ApiCredentials credentials) : base(credentials)
         {
@@ -36,7 +38,17 @@ namespace WhiteBit.Net
             if (!auth)
                 return;
 
-            var nonce = GetMillisecondTimestamp(apiClient);
+            DateTime now = DateTime.UtcNow;
+
+            long unixTimeMiliseconds = new DateTimeOffset(now).ToUnixTimeSeconds() * 1000;
+            // Get the start of today
+            DateTime startOfToday = now.Date;
+
+            // Calculate the difference in seconds
+            int secondsSinceToday = (int)(now - startOfToday).TotalSeconds;
+
+            var nonce = unixTimeMiliseconds + Interlocked.Increment(ref seconds[secondsSinceToday]);
+
             bodyParameters ??= new Dictionary<string, object>();
             bodyParameters.Add("request", uri.AbsolutePath);
             bodyParameters.Add("nonce", nonce);
