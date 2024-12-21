@@ -19,7 +19,7 @@ namespace WhiteBit.Net
 
         public WhiteBitAuthenticationProvider(ApiCredentials credentials) : base(credentials)
         {
-        }
+        }         
 
         public override void AuthenticateRequest(
             RestApiClient apiClient,
